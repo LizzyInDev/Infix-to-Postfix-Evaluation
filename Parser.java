@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -71,7 +70,7 @@ public class Parser {
          * Converting Infix to Postfix
          * This conversion follows the Shunting Yard Algorithm
          * String[] postfix serves as the queue
-         * String[] stack serves as the stack where operators are stored and popped
+         * String[] stack serves as the stack where operators are stored
          * */
         int stackCount = 0;
         int queueCount = 0;
@@ -121,7 +120,6 @@ public class Parser {
             stackCount--;
         }
 
-        System.out.println(Arrays.toString(postfix));
         // calls print to output String[] postfix
         print();
     }

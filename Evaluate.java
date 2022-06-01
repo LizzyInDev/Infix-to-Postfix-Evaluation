@@ -1,14 +1,12 @@
-import java.util.Arrays;
-
 public class Evaluate {
     private Parser p;
 
     public void postfixStack() {
         p = new Parser();
+        p.parser();
         String[] postfix = p.getPostfix();
         String[] stack = new String[256];   // stack evaluator
 
-        System.out.println(Arrays.toString(postfix));
         /*
          * Count total non-null entries in String[] postfix
          * This will be the control variable for evaluate for-loop
@@ -18,6 +16,12 @@ public class Evaluate {
             if(p!=null)
                 length++;
 
+        /*
+        * Evaluate Postfix
+        * This conversion follows the Shunting Yard Algorithm
+        * String[] postfix serves as the queue
+        * String[] stack serves as the stacks where operands are stored
+        * */
         int stackCount = 0;
         int operand1;
         int operand2;
@@ -27,12 +31,19 @@ public class Evaluate {
             boolean bool = p.checkOperator(token);
 
             if(bool) {
-                operand2 = Integer.parseInt(stack[stackCount-1]);
-                stack[stackCount-1] = null;
-                stackCount--;
-                operand1 = Integer.parseInt(stack[stackCount-2]);
-                stack[stackCount-2] = null;
-                stackCount--;
+                if(!token.equals("!")) {
+                    operand2 = Integer.parseInt(stack[stackCount - 1]);
+                    stack[stackCount - 1] = null;
+                    stackCount--;
+                    operand1 = Integer.parseInt(stack[stackCount - 1]);
+                    stack[stackCount - 1] = null;
+                    stackCount--;
+                } else {
+                    operand1 = Integer.parseInt(stack[stackCount - 1]);
+                    stack[stackCount - 1] = null;
+                    stackCount--;
+                    operand2 = 1;
+                }
 
                 if(token.equals("/") && operand2==0) {
                     error = 1;
@@ -50,9 +61,14 @@ public class Evaluate {
         if(error==1)
             System.out.println("Division by zero error!");
         else
-            System.out.println("Evaluated value: " + stack[stackCount]);
+            System.out.println("Evaluated value: " + stack[0]);
     }
 
+    /*
+    * Evaluates expression
+    * Accepts parameters int operand1, int operand2, and String operator
+    * Returns the result of the operation
+    * */
     public int evaluate(int operand1, int operand2, String operator) {
         boolean x;
         boolean y;
@@ -68,7 +84,7 @@ public class Evaluate {
             case "%":
                 return operand1 % operand2;
             case "^":
-                return operand1 ^ operand2;
+                return (int) Math.pow(operand1, operand2);
             case ">": {
                 boolean b = operand1 > operand2;
                 if (b)
