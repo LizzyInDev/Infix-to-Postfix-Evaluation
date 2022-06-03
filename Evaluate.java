@@ -31,6 +31,7 @@ public class Evaluate {
             boolean bool = p.checkOperator(token);
 
             if(bool) {
+                // If the operator is not !, we get 2 operands from the stack. Otherwise, we only get 1
                 if(!token.equals("!")) {
                     operand2 = Integer.parseInt(stack[stackCount - 1]);
                     stack[stackCount - 1] = null;
@@ -45,6 +46,7 @@ public class Evaluate {
                     operand2 = 1;
                 }
 
+                // If the operator is 0 and the divisor, we make error 1 and break the loop. Otherwise, we call evaluate.
                 if(token.equals("/") && operand2==0) {
                     error = 1;
                     break;
@@ -58,6 +60,7 @@ public class Evaluate {
                 stackCount++;
             }
         }
+
         if(error==1)
             System.out.println("Division by zero error!");
         else
@@ -136,8 +139,8 @@ public class Evaluate {
                     return 0;
             }
             case "&&": {
-                x = operand1 == 1;
-                y = operand2 == 1;
+                x = operand1 != 0;
+                y = operand2 != 0;
                 boolean b = x && y;
                 if (b)
                     return 1;
@@ -145,8 +148,8 @@ public class Evaluate {
                     return 0;
             }
             case "||": {
-                x = operand1 == 1;
-                y = operand2 == 1;
+                x = operand1 != 0;
+                y = operand2 != 0;
                 boolean b = x || y;
                 if (b)
                     return 1;

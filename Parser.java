@@ -32,14 +32,13 @@ public class Parser {
             String token = temp[i];
             boolean isOperand = checkOperand(token);
             boolean isOperator = checkOperator(token);
-
             if(isOperand) {
                 boolean isAlso = checkOperand(temp[i-1]);
                 if(checkpoint!=0 && isAlso)
                     infix[checkpoint] = infix[checkpoint] + temp[i];
                 else {
                     infix[check] = temp[i];
-                    checkpoint = i;
+                    checkpoint = check;
                     check++;
                 }
             } else if(isOperator) {
@@ -48,7 +47,7 @@ public class Parser {
                     infix[checkpoint] = infix[checkpoint] + temp[i];
                 else {
                     infix[check] = temp[i];
-                    checkpoint = i;
+                    checkpoint = check;
                     check++;
                 }
             } else {
